@@ -1,0 +1,234 @@
+.form {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  margin: 24px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  resize: vertical;
+  font-size: 15px;
+  font-family: inherit;
+  color: #777777;
+  margin-bottom: 16px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #126df7;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fileLabel {
+  color: #126df7;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 8px 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.fileLabel:hover {
+  color: #0a4eb6;
+}
+
+.fileInput {
+  display: none;
+}
+
+.submitButton {
+  background-color: #ffdd2d;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #f5d000;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.imagePreview {
+  margin-top: 16px;
+  padding: 10px;
+  background-color: #f6f7f8;
+  border-radius: 8px;
+  border: 1px dashed #e0e0e0;
+}
+
+.imagePreview p {
+  margin: 0;
+  color: #4d4d4d;
+  font-size: 13px;
+}
+
+.errorMessage {
+  background: #ffeaea;
+  color: #d63031;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ff7675;
+  font-size: 14px;
+}
+
+.closeError {
+  background: none;
+  border: none;
+  float: right;
+  cursor: pointer;
+  font-size: 16px;
+  color: #d63031;
+}
+
+@media (max-width: 768px) {
+  .form {
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .textarea {
+    min-height: 90px;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .fileLabel {
+    font-size: 13px;
+  }
+
+  .submitButton {
+    padding: 8px 16px;
+    font-size: 13px;
+    min-width: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form {
+    padding: 12px;
+    margin: 16px 0;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .textarea {
+    min-height: 80px;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .fileLabel {
+    text-align: center;
+    padding: 10px;
+    background-color: #f6f7f8;
+    border-radius: 6px;
+    order: 2;
+  }
+
+  .submitButton {
+    width: 100%;
+    order: 1;
+    padding: 10px;
+  }
+
+  .imagePreview {
+    margin-top: 12px;
+    padding: 8px;
+  }
+
+  .imagePreview p {
+    font-size: 12px;
+  }
+
+  .errorMessage {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .form {
+    padding: 10px;
+    margin: 12px 0;
+  }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .textarea {
+    min-height: 70px;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .fileLabel {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .submitButton {
+    padding: 8px;
+    font-size: 13px;
+  }
+}

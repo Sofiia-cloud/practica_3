@@ -1,0 +1,423 @@
+.profileContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.personInfo {
+  display: flex;
+  gap: 30px;
+  margin: 30px 0;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.profileImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffdd2d;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.imageOverlay:hover {
+  opacity: 1;
+}
+
+.fileInput {
+  display: none;
+}
+
+.changeImageButton {
+  color: #126df7;
+  background: none;
+  border: 1px solid #126df7;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.changeImageButton:hover {
+  background-color: #126df7;
+  color: white;
+}
+
+.profileInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 250px;
+}
+
+.profileInfoHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.profileInfoHeader h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.nameInput {
+  font-size: 22px;
+  font-weight: 500;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 100%;
+  max-width: 280px;
+  box-sizing: border-box;
+}
+
+.nameInput:focus {
+  outline: none;
+  border-color: #126df7;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.editButton:hover {
+  background-color: #f6f7f8;
+}
+
+.editButton img {
+  width: 18px;
+  height: 18px;
+}
+
+.profileInfoBody p {
+  margin: 0;
+  color: #4d4d4d;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.bioTextarea {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.bioTextarea:focus {
+  outline: none;
+  border-color: #126df7;
+}
+
+.editControls {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.saveButton {
+  background-color: #126df7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  min-width: 80px;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #f6f7f8;
+  color: #666;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 70px;
+}
+
+.errorMessage {
+  color: #ff4757;
+  background-color: #ffeaea;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+.stats {
+  display: flex;
+  gap: 25px;
+  flex-shrink: 0;
+  margin: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.statNumber {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #666;
+  display: block;
+  text-align: center;
+}
+
+.userPosts {
+  margin-top: 30px;
+}
+
+.userPosts h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+.emptyPosts {
+  text-align: center;
+  padding: 30px 20px;
+  color: #666;
+  background-color: #f6f7f8;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+    padding: 12px;
+  }
+
+  .personInfo {
+    padding: 24px;
+    gap: 24px;
+    margin: 20px 0;
+  }
+
+  .imageContainer {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profileInfoHeader h1 {
+    font-size: 20px;
+  }
+
+  .nameInput {
+    font-size: 20px;
+    max-width: 100%;
+  }
+
+  .stats {
+    gap: 20px;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .statNumber {
+    font-size: 16px;
+  }
+
+  .statLabel {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profileContainer {
+    padding: 8px;
+  }
+
+  .personInfo {
+    padding: 20px;
+    gap: 20px;
+    margin: 16px 0;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profileImage {
+    width: 100%;
+  }
+
+  .imageContainer {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+  }
+
+  .profileInfo {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profileInfoHeader {
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .profileInfoHeader h1 {
+    font-size: 18px;
+  }
+
+  .nameInput {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .profileInfoBody p {
+    font-size: 14px;
+  }
+
+  .bioTextarea {
+    font-size: 14px;
+    min-height: 70px;
+  }
+
+  .editControls {
+    justify-content: center;
+  }
+
+  .saveButton,
+  .cancelButton {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
+  }
+
+  .stats {
+    gap: 15px;
+  }
+
+  .statNumber {
+    font-size: 15px;
+  }
+
+  .userPosts h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 320px) {
+  .personInfo {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .imageContainer {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profileInfoHeader h1 {
+    font-size: 16px;
+  }
+
+  .nameInput {
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+
+  .bioTextarea {
+    font-size: 13px;
+    min-height: 60px;
+    padding: 8px;
+  }
+
+  .editControls {
+    flex-direction: column;
+  }
+
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .statNumber {
+    font-size: 14px;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
+}
