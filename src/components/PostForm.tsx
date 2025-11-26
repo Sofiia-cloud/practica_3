@@ -1,15 +1,42 @@
+// src/components/PostForm.tsx
 import React, { useState } from 'react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import { ProgressBar } from './ProgressBar';
 import avatar from '../assets/avatar_1.svg';
 import styles from '../modules/PostForm.module.css';
 
-export const PostForm: React.FC = () => {
+interface PostFormProps {
+  onPostCreated?: () => void;
+  isModal?: boolean;
+  onClose?: () => void;
+}
+
+export const PostForm: React.FC<PostFormProps> = ({
+  onPostCreated,
+  isModal = false,
+  onClose,
+}) => {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
   const { user } = useAuth();
+
+  const simulateProgress = () => {
+    setProgress(0);
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) {
+          clearInterval(interval);
+          return 90;
+        }
+        return prev + 10;
+      });
+    }, 100);
+    return interval;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +54,8 @@ export const PostForm: React.FC = () => {
     setLoading(true);
     setError(null);
 
+    const progressInterval = simulateProgress();
+
     try {
       await addDoc(collection(db, 'posts'), {
         text: text.trim(),
@@ -41,15 +70,27 @@ export const PostForm: React.FC = () => {
         comments: [],
       });
 
-      setText('');
-      setError(null);
-      window.location.reload();
+      clearInterval(progressInterval);
+      setProgress(100);
 
-      const fileInput = document.querySelector(
-        'input[type="file"]'
-      ) as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
+      setTimeout(() => {
+        setText('');
+        setProgress(0);
+        setError(null);
+
+        if (onPostCreated) {
+          onPostCreated();
+        }
+
+        if (isModal && onClose) {
+          onClose();
+        } else {
+          window.location.reload();
+        }
+      }, 500);
     } catch (error: any) {
+      clearInterval(progressInterval);
+      setProgress(0);
       console.error('Полная ошибка при создании поста:', error);
       setError(
         `Ошибка при публикации поста: ${error.message || 'Неизвестная ошибка'}`
@@ -59,8 +100,17 @@ export const PostForm: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form
+      onSubmit={handleSubmit}
+      className={`${styles.form} ${isModal ? styles.modalForm : ''}`}
+    >
       <h2 className={styles.title}>Создать публикацию</h2>
 
       {error && (
@@ -85,7 +135,23 @@ export const PostForm: React.FC = () => {
         maxLength={1000}
       />
 
+      <div className={styles.charCount}>{text.length}/1000 символов</div>
+
+      {loading && (
+        <ProgressBar progress={progress} label="Публикация поста..." />
+      )}
+
       <div className={styles.actions}>
+        {isModal && (
+          <button
+            type="button"
+            onClick={handleCancel}
+            className={styles.cancelButton}
+            disabled={loading}
+          >
+            Отмена
+          </button>
+        )}
         <button
           type="submit"
           disabled={loading || !text.trim()}

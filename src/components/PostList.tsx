@@ -13,8 +13,13 @@ import { Post as PostType } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import { useLikes } from '../hooks/useLikes';
 import { CommentSection } from './CommentSection';
+import { Modal } from './Modal';
+import { PostForm } from './PostForm';
+import { ProgressBar } from './ProgressBar';
+import { PostsProgressBar } from './PostsProgressBar';
 import delete_icon from '../assets/delete.svg';
 import comment_icon from '../assets/comment.svg';
+import add_icon from '../assets/edit.svg';
 import styles from '../modules/PostList.module.css';
 
 interface PostListProps {
@@ -34,6 +39,9 @@ export const PostList: React.FC<PostListProps> = ({
   const [showCommentsForPost, setShowCommentsForPost] = useState<string | null>(
     null
   );
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [quickLikeLoading, setQuickLikeLoading] = useState<string | null>(null);
+  const [bulkLikeProgress, setBulkLikeProgress] = useState(0);
   const { user } = useAuth();
   const { toggleLike, loading: likeLoading } = useLikes();
 
@@ -98,6 +106,79 @@ export const PostList: React.FC<PostListProps> = ({
     }
   };
 
+  const handleQuickLike = async (post: PostType) => {
+    if (!user) {
+      alert('Войдите в систему чтобы ставить лайки');
+      return;
+    }
+
+    if (user.uid === post.userId) {
+      alert('Нельзя лайкать свои посты');
+      return;
+    }
+
+    setQuickLikeLoading(post.id);
+
+    try {
+      const isLiked = post.likes.includes(user.uid);
+      await toggleLike(post.id, isLiked);
+
+      // Быстрая визуальная обратная связь
+      setTimeout(() => {
+        setQuickLikeLoading(null);
+      }, 300);
+    } catch (error) {
+      console.error('Ошибка при лайке:', error);
+      setQuickLikeLoading(null);
+    }
+  };
+
+  const handleLikeAllVisible = async () => {
+    if (!user) {
+      alert('Войдите в систему чтобы ставить лайки');
+      return;
+    }
+
+    const postsToLike = posts.filter(
+      (post) => post.userId !== user.uid && !post.likes.includes(user.uid)
+    );
+
+    if (postsToLike.length === 0) {
+      alert(
+        'Нет постов для лайка! Все видимые посты уже пролайканы или являются вашими.'
+      );
+      return;
+    }
+
+    if (!window.confirm(`Поставить лайки на ${postsToLike.length} постов?`)) {
+      return;
+    }
+
+    setBulkLikeProgress(0);
+    const totalPosts = postsToLike.length;
+    let processed = 0;
+
+    for (const post of postsToLike) {
+      try {
+        await toggleLike(post.id, false);
+        processed++;
+        setBulkLikeProgress((processed / totalPosts) * 100);
+
+        // Небольшая задержка для лучшего UX
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      } catch (error) {
+        console.error(`Ошибка при лайке поста ${post.id}:`, error);
+      }
+    }
+
+    setTimeout(() => {
+      setBulkLikeProgress(0);
+      alert(
+        `Лайки успешно поставлены на ${processed} из ${totalPosts} постов!`
+      );
+    }, 500);
+  };
+
   const handleDeletePost = async (postId: string) => {
     if (!user) return;
 
@@ -137,22 +218,83 @@ export const PostList: React.FC<PostListProps> = ({
     return date.toLocaleDateString('ru-RU');
   };
 
+  if (loading) {
+    return (
+      <div className={styles.postsContainer}>
+        <div className={styles.loadingState}>
+          <ProgressBar progress={50} label="Загрузка постов..." />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.postsContainer}>
-      <h2 className={styles.title}>
-        {' '}
-        {showOnlyUserPosts ? 'Мои публикации' : 'Все публикации'}
-      </h2>
+      {!showOnlyUserPosts && (
+        <PostsProgressBar
+          currentPosts={posts.length}
+          totalPosts={posts.length}
+          goalPosts={100}
+        />
+      )}
+      <div className={styles.postsHeader}>
+        <h2 className={styles.title}>
+          {showOnlyUserPosts ? 'Мои публикации' : 'Все публикации'}
+        </h2>
+
+        <div className={styles.quickActions}>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className={styles.createPostButton}
+            title="Создать новый пост"
+            disabled={!user}
+          >
+            <img src={add_icon} alt="Создать пост" />
+            Новый пост
+          </button>
+
+          {!showOnlyUserPosts && user && posts.length > 0 && (
+            <button
+              onClick={handleLikeAllVisible}
+              className={styles.likeAllButton}
+              title="Поставить лайк на все видимые посты"
+              disabled={bulkLikeProgress > 0}
+            >
+              {bulkLikeProgress > 0 ? '⏳' : '❤️'}
+              Лайкнуть все
+            </button>
+          )}
+        </div>
+      </div>
+
+      {bulkLikeProgress > 0 && (
+        <div className={styles.bulkProgress}>
+          <ProgressBar progress={bulkLikeProgress} label="Массовый лайк..." />
+        </div>
+      )}
 
       {posts.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>У вас пока нет публикаций. Создайте первую!</p>
+          <p>
+            {showOnlyUserPosts
+              ? 'У вас пока нет публикаций. Создайте первую!'
+              : 'Пока нет публикаций. Будьте первым!'}
+          </p>
+          {user && (
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className={styles.createFirstPostButton}
+            >
+              Создать первый пост
+            </button>
+          )}
         </div>
       ) : (
         <div className={styles.postsList}>
           {posts.map((post) => {
             const isLiked = user ? post.likes.includes(user.uid) : false;
             const isOwnPost = user ? user.uid === post.userId : false;
+            const isQuickLiking = quickLikeLoading === post.id;
 
             return (
               <div key={post.id} className={styles.publication}>
@@ -193,9 +335,9 @@ export const PostList: React.FC<PostListProps> = ({
 
                   <div className={styles.publicationFooter}>
                     <button
-                      onClick={() => handleLikeClick(post)}
-                      disabled={likeLoading || isOwnPost}
-                      className={`${styles.likesButton} ${isLiked ? styles.liked : ''} ${isOwnPost ? styles.disabled : ''}`}
+                      onClick={() => handleQuickLike(post)}
+                      disabled={likeLoading || isOwnPost || isQuickLiking}
+                      className={`${styles.likesButton} ${isLiked ? styles.liked : ''} ${isOwnPost ? styles.disabled : ''} ${isQuickLiking ? styles.quickLiking : ''}`}
                       title={
                         isOwnPost
                           ? 'Нельзя лайкать свои посты'
@@ -220,6 +362,9 @@ export const PostList: React.FC<PostListProps> = ({
                       <span className={styles.likesCount}>
                         {post.likesCount}
                       </span>
+                      {isQuickLiking && (
+                        <div className={styles.pulseAnimation}></div>
+                      )}
                     </button>
 
                     <button
@@ -251,6 +396,22 @@ export const PostList: React.FC<PostListProps> = ({
           })}
         </div>
       )}
+
+      <Modal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        title="Создать публикацию"
+        size="md"
+      >
+        <PostForm
+          isModal={true}
+          onClose={() => setIsCreateModalOpen(false)}
+          onPostCreated={() => {
+            setIsCreateModalOpen(false);
+            window.location.reload();
+          }}
+        />
+      </Modal>
     </div>
   );
 };

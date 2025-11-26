@@ -6,7 +6,6 @@ import { Header } from './components/Header';
 import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
 import { Profile } from './components/Profile';
-import { PostForm } from './components/PostForm';
 import { PostList } from './components/PostList';
 import { SearchResults } from './components/SearchText';
 import './App.css';
@@ -42,7 +41,16 @@ function App() {
   };
 
   if (loading) {
-    return <div className="App">Загрузка...</div>;
+    return (
+      <div className="App">
+        <div className="main-container">
+          <div className="loading-screen">
+            <div className="loading-spinner"></div>
+            <p>Загрузка приложения...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -52,45 +60,99 @@ function App() {
           <Header onSearch={handleSearch} />
           <main className="main-content">
             <div className="container">
+              {/* Режим поиска */}
               {isSearching && (
-                <SearchResults
-                  posts={searchResults}
-                  searchQuery={searchQuery}
-                  onClearSearch={handleClearSearch}
-                />
+                <div className="search-mode">
+                  {searchLoading && (
+                    <div className="loading-indicator">
+                      <div className="loading-spinner"></div>
+                      <p>Поиск публикаций...</p>
+                    </div>
+                  )}
+
+                  {searchError && (
+                    <div className="error-message">
+                      <span>⚠️</span>
+                      {searchError}
+                    </div>
+                  )}
+
+                  {!searchLoading && !searchError && (
+                    <SearchResults
+                      posts={searchResults}
+                      searchQuery={searchQuery}
+                      onClearSearch={handleClearSearch}
+                    />
+                  )}
+                </div>
               )}
 
-              {searchLoading && <div className="loading">Поиск...</div>}
-
-              {searchError && (
-                <div className="error-message">{searchError}</div>
-              )}
-
+              {/* Обычный режим (не поиск) */}
               {!isSearching && (
                 <Routes>
+                  {/* Логин - если пользователь не авторизован, показываем форму входа */}
                   <Route
                     path="/login"
-                    element={!user ? <LoginForm /> : <PostList />}
+                    element={
+                      !user ? (
+                        <LoginForm />
+                      ) : (
+                        <PostList showOnlyUserPosts={false} />
+                      )
+                    }
                   />
+
+                  {/* Регистрация - если пользователь не авторизован, показываем форму регистрации */}
                   <Route
                     path="/register"
-                    element={!user ? <RegisterForm /> : <PostList />}
+                    element={
+                      !user ? (
+                        <RegisterForm />
+                      ) : (
+                        <PostList showOnlyUserPosts={false} />
+                      )
+                    }
                   />
+
+                  {/* Профиль - только для авторизованных пользователей */}
                   <Route
                     path="/profile"
                     element={user ? <Profile /> : <LoginForm />}
                   />
+
+                  {/* Главная страница */}
                   <Route
                     path="/"
                     element={
                       user ? (
-                        <div className="fade-in">
+                        <div className="home-page">
                           <PostList showOnlyUserPosts={false} />
-                          <PostForm />
                         </div>
                       ) : (
-                        <LoginForm />
+                        <div className="auth-page">
+                          <LoginForm />
+                        </div>
                       )
+                    }
+                  />
+
+                  {/* Резервный маршрут для несуществующих страниц */}
+                  <Route
+                    path="*"
+                    element={
+                      <div className="not-found">
+                        <h2>Страница не найдена</h2>
+                        <p>Запрашиваемая страница не существует.</p>
+                        {user ? (
+                          <a href="/" className="back-link">
+                            Вернуться на главную
+                          </a>
+                        ) : (
+                          <a href="/login" className="back-link">
+                            Войти в систему
+                          </a>
+                        )}
+                      </div>
                     }
                   />
                 </Routes>
