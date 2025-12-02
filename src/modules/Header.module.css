@@ -287,3 +287,14 @@
     flex: 0 0 auto;
   }
 }
+
+.dark .navigation {
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+.dark .searchText {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border-color: #444;
+}

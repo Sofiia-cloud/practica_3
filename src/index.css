@@ -11,3 +11,207 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+/* src/index.css */
+/* Добавьте эти стили */
+
+.dark-theme {
+  /* Основные цвета */
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+/* Шапка */
+.dark-theme nav,
+.dark-theme .navigation,
+.dark-theme .menu,
+.dark-theme .logo {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+/* Поле поиска */
+.dark-theme input,
+.dark-theme .searchText {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important;
+  border-color: #444 !important;
+}
+
+/* Публикации */
+.dark-theme .publication,
+.dark-theme .publicationContent,
+.dark-theme .postsContainer > div,
+.dark-theme .postsList > div {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+/* Текст в публикациях */
+.dark-theme .publicationText,
+.dark-theme .name,
+.dark-theme .title,
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3 {
+  color: #ffffff !important;
+}
+
+/* Время */
+.dark-theme .time,
+.dark-theme span:not(.likesCount):not(.commentsCount) {
+  color: #aaa !important;
+}
+
+/* Кнопки */
+.dark-theme button:not(.theme-toggle) {
+  background-color: #333 !important;
+  color: #ffffff !important;
+  border-color: #444 !important;
+}
+
+/* Желтые кнопки */
+.dark-theme .authBtn,
+.dark-theme .yellow_button {
+  background-color: #ffd700 !important;
+  color: #333 !important;
+}
+
+/* Иконки в темной теме */
+.dark-theme img:not([src*='.svg']) {
+  filter: brightness(0.8);
+}
+
+/* SVG иконки */
+.dark-theme svg {
+  color: #ffffff !important;
+}
+
+/* Контейнеры */
+.dark-theme .container,
+.dark-theme .main-content,
+.dark-theme .main-container {
+  background-color: #121212 !important;
+}
+/* src/index.css - добавьте в конец файла */
+
+/* СИЛЬНЫЕ селекторы для темной темы с !important */
+
+/* Шапка сайта */
+body.dark-theme nav.navigation,
+body.dark-theme .navigation,
+body.dark-theme header,
+body.dark-theme .menu {
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+}
+
+/* Все блоки публикаций */
+body.dark-theme .publication,
+body.dark-theme .postsContainer > *,
+body.dark-theme .postsList > *,
+body.dark-theme .postsList .publication,
+body.dark-theme .publicationContent,
+body.dark-theme .postsContainer,
+body.dark-theme .postsList,
+body.dark-theme [class*='publication'],
+body.dark-theme [class*='Publication'] {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+/* Текст в публикациях */
+body.dark-theme .publicationText,
+body.dark-theme .name,
+body.dark-theme .title,
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6,
+body.dark-theme p,
+body.dark-theme span:not(.likesCount):not(.commentsCount) {
+  color: #ffffff !important;
+}
+
+/* Время и мета-информация */
+body.dark-theme .time,
+body.dark-theme .userEmail,
+body.dark-theme .searchHeader h3 {
+  color: #aaa !important;
+}
+
+/* Кнопки в публикациях */
+body.dark-theme .likesButton,
+body.dark-theme .greyButton,
+body.dark-theme button:not(.theme-toggle) {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-color: #444 !important;
+}
+
+/* Желтые кнопки */
+body.dark-theme .authBtn,
+body.dark-theme .yellow_button,
+body.dark-theme .submitButton {
+  background-color: #ffd700 !important;
+  color: #333 !important;
+}
+
+/* SVG иконки сердечек и комментариев */
+body.dark-theme svg,
+body.dark-theme .likeIcon {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Поле поиска */
+body.dark-theme input,
+body.dark-theme .searchText,
+body.dark-theme textarea {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important;
+  border-color: #444 !important;
+}
+
+/* Заголовки */
+body.dark-theme .title {
+  color: #ffffff !important;
+}
+
+/* Если не помогает, добавьте ядерную опцию - перебиваем ВСЕ возможные цвета */
+body.dark-theme *:not(.theme-toggle) {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+/* Затем исключите элементы, которые не должны быть такими */
+body.dark-theme button.theme-toggle {
+  background-color: #ffd700 !important;
+  color: #333 !important;
+}
+
+body.dark-theme .authBtn,
+body.dark-theme .yellow_button {
+  background-color: #ffd700 !important;
+  color: #333 !important;
+}
+
+/* Для иконок в кнопках */
+body.dark-theme .likesButton svg,
+body.dark-theme .greyButton svg {
+  color: inherit !important;
+}
+
+/* Для прогресс-бара (если есть) */
+body.dark-theme .progressBar,
+body.dark-theme .progressFill {
+  background-color: #333 !important;
+}
+
+body.dark-theme .progressFill {
+  background-color: #ffd700 !important;
+}

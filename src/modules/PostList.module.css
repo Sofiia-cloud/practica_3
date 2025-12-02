@@ -400,3 +400,17 @@
     opacity: 0;
   }
 }
+
+.dark .postsContainer {
+  background-color: transparent;
+}
+
+.dark .publication {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #333;
+}
+
+.dark .publicationText {
+  color: #e0e0e0;
+}

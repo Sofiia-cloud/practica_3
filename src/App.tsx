@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useSearch } from './hooks/useSearch';
@@ -22,6 +22,24 @@ function App() {
   } = useSearch();
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  // Управление темой
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+  };
 
   const handleSearch = (searchText: string) => {
     if (searchText.trim()) {
@@ -56,7 +74,39 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className={`App ${darkMode ? 'dark-theme' : ''}`}>
+        {/* Кнопка переключения темы */}
+        <button
+          onClick={toggleTheme}
+          className="theme-toggle"
+          title={
+            darkMode
+              ? 'Переключить на светлую тему'
+              : 'Переключить на темную тему'
+          }
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000,
+            background: darkMode ? '#333' : '#fff',
+            border: `2px solid ${darkMode ? '#ffd700' : '#333'}`,
+            color: darkMode ? '#fff' : '#333',
+            borderRadius: '50%',
+            width: '44px',
+            height: '44px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          }}
+        >
+          {darkMode ? '☀️' : '🌙'}
+        </button>
+
         <div className="main-container">
           <Header onSearch={handleSearch} />
           <main className="main-content">
@@ -121,6 +171,12 @@ function App() {
                     element={user ? <Profile /> : <LoginForm />}
                   />
 
+                  {/* Технологии */}
+                  <Route
+                    path="/technologies"
+                    element={user ? <TechnologiesPage /> : <LoginForm />}
+                  />
+
                   {/* Главная страница */}
                   <Route
                     path="/"
@@ -135,10 +191,6 @@ function App() {
                         </div>
                       )
                     }
-                  />
-                  <Route
-                    path="/technologies"
-                    element={user ? <TechnologiesPage /> : <LoginForm />}
                   />
 
                   {/* Резервный маршрут для несуществующих страниц */}
