@@ -73,7 +73,13 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             >
               <img src={profile} alt="Профиль" className={styles.profileIcon} />
             </button>
-
+            <button
+              className={styles.techBtn}
+              onClick={() => navigate('/technologies')}
+              title="Управление технологиями"
+            >
+              Технологии
+            </button>
             <button
               className={styles.exitBtn}
               onClick={handleLogout}

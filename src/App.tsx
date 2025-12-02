@@ -8,6 +8,7 @@ import { RegisterForm } from './components/RegisterForm';
 import { Profile } from './components/Profile';
 import { PostList } from './components/PostList';
 import { SearchResults } from './components/SearchText';
+import { TechnologiesPage } from './components/TechnologiesPage';
 import './App.css';
 
 function App() {
@@ -134,6 +135,10 @@ function App() {
                         </div>
                       )
                     }
+                  />
+                  <Route
+                    path="/technologies"
+                    element={user ? <TechnologiesPage /> : <LoginForm />}
                   />
 
                   {/* Резервный маршрут для несуществующих страниц */}
